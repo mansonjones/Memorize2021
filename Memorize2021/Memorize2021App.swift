@@ -9,9 +9,15 @@ import SwiftUI
 
 @main
 struct Memorize2021App: App {
+    // This creates an instance of the ViewModel,
+    // which is a class.
+    // game is a reference to the ViewModel class
+    
+    let game = EmojiMemoryGame()
+    
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ContentView(viewModel: game)
         }
     }
 }
