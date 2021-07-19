@@ -13,11 +13,11 @@ struct Memorize2021App: App {
     // which is a class.
     // game is a reference to the ViewModel class
     
-    let game = EmojiMemoryGame()
+    private let game = EmojiMemoryGame()
     
     var body: some Scene {
         WindowGroup {
-            ContentView(viewModel: game)
+            EmojiMemoryGameView(game: game)
         }
     }
 }
