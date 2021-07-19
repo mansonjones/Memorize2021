@@ -29,8 +29,8 @@ class EmojiMemoryGame: ObservableObject {
     }
     
     // The include of @Published means that
-    // anytime that the model changes the
-    // change is broadcast.
+    // anytime that the model changes that
+    // the world is notified.
     
     @Published private var model: MemoryGame<String> = createMemoryGame()
     
