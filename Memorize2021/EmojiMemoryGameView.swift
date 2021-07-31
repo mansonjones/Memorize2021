@@ -40,17 +40,6 @@ struct EmojiMemoryGameView: View {
     }
 }
 
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        let game = EmojiMemoryGame()
-        EmojiMemoryGameView(game: game)
-            .preferredColorScheme(.dark)
-        EmojiMemoryGameView(game: game)
-            .preferredColorScheme(.light)
-    }
-}
-
-
 // Views are immutable.  In the CardView, you need to
 // declare isFaceUp using @State in order to modify
 // it.
@@ -65,6 +54,12 @@ struct CardView: View {
                 if card.isFaceUp {
                     shape.fill().foregroundColor(/*@START_MENU_TOKEN@*/.white/*@END_MENU_TOKEN@*/)
                     shape.strokeBorder(lineWidth: DrawingConstants.lineWidth)
+                    Pie(
+                        startAngle: Angle(degrees: -90),
+                        endAngle: Angle(degrees: 110-90)
+                    )
+                    .padding(DrawingConstants.circlPadding)
+                    .opacity(DrawingConstants.circleOpacity)
                     Text(card.content)
                         .font(font(in: geometry.size))
                 } else if card.isMatched {
@@ -86,6 +81,22 @@ struct CardView: View {
     private struct DrawingConstants {
         static let cornerRadius: CGFloat = 10
         static let lineWidth: CGFloat = 3
-        static let fontScale: CGFloat = 0.75
+        static let fontScale: CGFloat = 0.7
+        static let circleOpacity: Double = 0.5
+        static let circlPadding: CGFloat = 5
     }
 }
+
+struct ContentView_Previews: PreviewProvider {
+    static var previews: some View {
+        let game = EmojiMemoryGame()
+        game.choose(game.cards.first!)
+        return EmojiMemoryGameView(game: game)
+            .preferredColorScheme(.dark)
+        /*
+        EmojiMemoryGameView(game: game)
+            .preferredColorScheme(.light)
+ */
+    }
+}
+
