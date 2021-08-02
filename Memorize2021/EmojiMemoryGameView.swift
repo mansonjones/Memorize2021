@@ -18,22 +18,42 @@ struct EmojiMemoryGameView: View {
     @ObservedObject var game: EmojiMemoryGame
     
     var body: some View {
+        VStack {
+            gameBody
+            shuffle
+        }
+        .padding()
+    }
+    
+    var gameBody: some View {
         AspectVGrid(items: game.cards, aspectRatio: 2/3) { card in
-            cardView(for: card)            
+            cardView(for: card)
         }
         .foregroundColor(/*@START_MENU_TOKEN@*/.red/*@END_MENU_TOKEN@*/)
         .padding(.horizontal)
     }
     
+    var shuffle: some View {
+        Button("Shuffle") {
+            //  withAnimation(.easeInOut(duration: 5)) {
+            withAnimation {
+                game.shuffle()
+            }
+        }
+    }
+    
     @ViewBuilder
     private func cardView(for card: EmojiMemoryGame.Card) -> some View {
         if card.isMatched && !card.isFaceUp {
-            Rectangle().opacity(0)
+            Color.clear
+            // Rectangle().opacity(0)
         } else  {
             CardView(card: card)
                 .padding(4)
                 .onTapGesture {
-                    game.choose(card)
+                    withAnimation(.easeInOut(duration: 3)) {
+                        game.choose(card)
+                    }
                 }
         }
     }
@@ -63,7 +83,7 @@ struct CardView: View {
             }
             .cardify(isFaceUp: card.isFaceUp)
         }
-        }
+    }
     
     // Creating private funcs like this is a good practice.
     // It keeps the declarative code nice and clean.

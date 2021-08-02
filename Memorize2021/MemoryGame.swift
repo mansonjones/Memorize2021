@@ -43,8 +43,12 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
         }
     }
     
+    mutating func shuffle() {
+        cards.shuffle()
+    }
+    
     // This is a good example of how a function can be used
-    // as a functio argument. 
+    // as a function argument.
     
     init(numberOfPairsOfCards: Int, createCardContent: (Int) -> CardContent) {
         cards = []
@@ -54,7 +58,7 @@ struct MemoryGame<CardContent> where CardContent: Equatable {
             cards.append(Card(content: content, id: 2*pairIndex))
             cards.append(Card(content: content, id: 2*pairIndex + 1))
         }
-        
+        cards.shuffle()
     }
     
     struct Card: Identifiable {
