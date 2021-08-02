@@ -19,8 +19,7 @@ struct EmojiMemoryGameView: View {
     
     var body: some View {
         AspectVGrid(items: game.cards, aspectRatio: 2/3) { card in
-            cardView(for: card)
-            
+            cardView(for: card)            
         }
         .foregroundColor(/*@START_MENU_TOKEN@*/.red/*@END_MENU_TOKEN@*/)
         .padding(.horizontal)
@@ -31,11 +30,11 @@ struct EmojiMemoryGameView: View {
         if card.isMatched && !card.isFaceUp {
             Rectangle().opacity(0)
         } else  {
-        CardView(card: card)
-            .padding(4)
-            .onTapGesture {
-                game.choose(card)
-            }
+            CardView(card: card)
+                .padding(4)
+                .onTapGesture {
+                    game.choose(card)
+                }
         }
     }
 }
@@ -48,28 +47,20 @@ struct CardView: View {
     let card: EmojiMemoryGame.Card
     
     var body: some View {
-        GeometryReader(content: { geometry in
+        GeometryReader { geometry in
             ZStack {
-                let shape = RoundedRectangle(cornerRadius: DrawingConstants.cornerRadius)
-                if card.isFaceUp {
-                    shape.fill().foregroundColor(/*@START_MENU_TOKEN@*/.white/*@END_MENU_TOKEN@*/)
-                    shape.strokeBorder(lineWidth: DrawingConstants.lineWidth)
-                    Pie(
-                        startAngle: Angle(degrees: -90),
-                        endAngle: Angle(degrees: 110-90)
-                    )
-                    .padding(DrawingConstants.circlPadding)
-                    .opacity(DrawingConstants.circleOpacity)
-                    Text(card.content)
-                        .font(font(in: geometry.size))
-                } else if card.isMatched {
-                    shape.opacity(0)
-                } else {
-                    shape.fill()
-                }
+                Pie(
+                    startAngle: Angle(degrees: -90),
+                    endAngle: Angle(degrees: 110-90)
+                )
+                .padding(DrawingConstants.circlePadding)
+                .opacity(DrawingConstants.circleOpacity)
+                Text(card.content)
+                    .font(font(in: geometry.size))
             }
-        })
-    }
+            .cardify(isFaceUp: card.isFaceUp)
+        }
+        }
     
     // Creating private funcs like this is a good practice.
     // It keeps the declarative code nice and clean.
@@ -81,9 +72,10 @@ struct CardView: View {
     private struct DrawingConstants {
         static let cornerRadius: CGFloat = 10
         static let lineWidth: CGFloat = 3
+        static let circlePadding: CGFloat = 5
+        static let circleOpacity = 0.5
         static let fontScale: CGFloat = 0.7
-        static let circleOpacity: Double = 0.5
-        static let circlPadding: CGFloat = 5
+        
     }
 }
 
@@ -94,9 +86,9 @@ struct ContentView_Previews: PreviewProvider {
         return EmojiMemoryGameView(game: game)
             .preferredColorScheme(.dark)
         /*
-        EmojiMemoryGameView(game: game)
-            .preferredColorScheme(.light)
- */
+         EmojiMemoryGameView(game: game)
+         .preferredColorScheme(.light)
+         */
     }
 }
 
