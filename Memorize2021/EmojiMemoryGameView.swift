@@ -56,7 +56,10 @@ struct CardView: View {
                 .padding(DrawingConstants.circlePadding)
                 .opacity(DrawingConstants.circleOpacity)
                 Text(card.content)
-                    .font(font(in: geometry.size))
+                    .rotationEffect(Angle.degrees(card.isMatched ? 360 : 0))
+                    .animation(Animation.linear(duration: 1).repeatForever(autoreverses: false))
+                    .font(Font.system(size: DrawingConstants.fontSize))
+                    .scaleEffect(scale(thatFits: geometry.size))
             }
             .cardify(isFaceUp: card.isFaceUp)
         }
@@ -65,17 +68,22 @@ struct CardView: View {
     // Creating private funcs like this is a good practice.
     // It keeps the declarative code nice and clean.
     
+    private func scale(thatFits size: CGSize) -> CGFloat {
+        min(size.width, size.height) /
+            (DrawingConstants.fontSize / DrawingConstants.fontScale)
+    }
+    
     private func font(in size: CGSize) -> Font {
         Font.system(size: min(size.width, size.height) * DrawingConstants.fontScale)
     }
     
+    
+    
     private struct DrawingConstants {
-        static let cornerRadius: CGFloat = 10
-        static let lineWidth: CGFloat = 3
         static let circlePadding: CGFloat = 5
         static let circleOpacity = 0.5
         static let fontScale: CGFloat = 0.7
-        
+        static let fontSize: CGFloat = 32
     }
 }
 
